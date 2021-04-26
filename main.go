@@ -28,17 +28,36 @@ type DateData struct {
 	PopularDistrict string
 }
 
+func compute(value int) {
+	for i := 0; i < value; i++ {
+		time.Sleep(time.Second)
+		fmt.Println(i)
+	}
+}
+
+var masterDates []interface{}
+
 func main() {
 	start := time.Now()
-	// Code to measure
-
 	reports := CreateReport()
-	dates := ParseDates(reports)
-	FindAllPopularDistricts(dates)
-	duration := time.Since(start)
 
+	go run(reports[0:37920])
+	go run(reports[37920:75840])
+	go run(reports[75840:113760])
+	go run(reports[113760:151680])
+	go run(reports[189600:])
+
+	duration := time.Since(start)
 	fmt.Println("duration", duration)
 
+	fmt.Scanln()
+
+}
+
+func run(reports []Report) {
+	dates := ParseDates(reports)
+	FindAllPopularDistricts(dates)
+	masterDates = append(masterDates, dates)
 }
 
 func CreateReport() []Report {
